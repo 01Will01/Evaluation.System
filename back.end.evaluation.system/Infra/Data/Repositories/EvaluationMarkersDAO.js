@@ -6,6 +6,23 @@ var _shared = new shared();
 
 function EvaluationMarkersDAO() {}
 
+EvaluationMarkersDAO.prototype.ValidadeSchemaTable = async function() {
+
+    let conn = new dbConn(false);
+
+    query = `SELECT count(*) count
+    FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'db_cichla'
+    AND TABLE_NAME  = 'tb_marcadores_avaliativos'`;
+
+    let data = await conn.query(query).then((result) => {
+        return result[0].count;
+    });
+
+    conn.close();
+    return data;
+};
+
 EvaluationMarkersDAO.prototype.Include = async function(element, status) {
     let eMarker = element;
     eMarker.id = uuid.v1();

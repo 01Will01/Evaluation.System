@@ -144,13 +144,12 @@ module.exports = CreateTables = async() => {
                                     CREATE TABLE IF NOT EXISTS tb_questoes(
                                     id_questao VARCHAR(50) NOT NULL,
                                     ds_questao VARCHAR(50) NOT NULL,
-                                    id_criterio_area VARCHAR(50) NOT NULL,
+                                    id_criterio VARCHAR(50) NOT NULL,
                                     dt_cadastro DATETIME NOT NULL,
                                     dt_alteracao DATETIME NOT NULL,
                                     id_status INT NOT NULL,
                                     PRIMARY KEY(id_questao),
                                     FOREIGN KEY (id_status) REFERENCES tb_status(id_status),
-                                    FOREIGN KEY (id_criterio_area) REFERENCES tb_criterio_area(id_criterio_area),
                                     INDEX (ds_questao)
                                     );
                                     

@@ -11,9 +11,13 @@ module.exports = (application) => {
 
         let _markersRepository = new application.Infra.Data.Repositories.EvaluationMarkersDAO();
 
-        await Include(_markersRepository);
-        await Activate(_markersRepository);
-        await Disable(_markersRepository);
+        let count = await _markersRepository.ValidadeSchemaTable();
+
+        if (count > 0) {
+            await Include(_markersRepository);
+            await Activate(_markersRepository);
+            await Disable(_markersRepository);
+        }
     });
 
     //#endregion Métodos principais

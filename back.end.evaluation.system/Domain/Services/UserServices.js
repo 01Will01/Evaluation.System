@@ -86,6 +86,7 @@ UserServices.prototype.Authenticator = async(req, res, _userRepository) => {
         let accessValidation =
             result.password == EncryptCharacters(req.body.password);
 
+        console.log(EncryptCharacters(req.body.password))
         let status = accessPermissions && accessValidation;
 
         let object = status ? result : [];
