@@ -107,12 +107,12 @@
                         <div id="action-register">
                             <button type="submit"> <a id="save-register"a title="Salvar"><i type="submit" class="fa fa-floppy-o fa-2x" aria-hidden="true"></i></a></button>
                         </div>
-                        <span class="required" *ngIf="statusMessage">
-                            <div *ngFor="let message of messages">
-                                {{ message }}
-                            </div>
-                        </span>
                     </form>
+                    <span class="required" *ngIf="statusMessage">
+                        <div *ngFor="let message of messages">
+                            {{ message }}
+                        </div>
+                    </span>
                 </div>
             </div>
 
@@ -133,12 +133,12 @@
                             <button type="submit"> <a id="save-update" title="Salvar"><i class="fa fa-floppy-o fa-2x" aria-hidden="true"></i></a></button>
                             <a (click)="openGroupContext()" id="close-update"> Voltar </a>
                         </div>
-                        <span class="required" *ngIf="statusMessage">
-                            <div *ngFor="let message of messages">
-                                {{ message }}
-                            </div>
-                        </span>
                     </form>
+                    <span class="required" *ngIf="statusMessage">
+                        <div *ngFor="let message of messages">
+                            {{ message }}
+                        </div>
+                    </span>
                 </div>
             </div>
         </div>

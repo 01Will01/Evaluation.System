@@ -6,7 +6,7 @@
   
   
   export interface Criterion {
-    id: number;
+    id: string;
     name: string;
     registerDate: string;
     statusCode: number;
@@ -48,7 +48,7 @@
     //Controle de ações(Sim ou não)
     public accessAction: boolean;
     public accessActionRemove: boolean;
-    public idRemove: number;
+    public idRemove: string;
   
     constructor(private formBuilder: FormBuilder, private criterionService: CriterionService, private departmentService: DepartmentService) { }
   
@@ -149,10 +149,10 @@
       this.openConfirmAction();
     }
   
-    ActionRemove(value: number) {
+    ActionRemove(value: string) {
   
       this.accessActionRemove = false;
-      this.idRemove = 0;
+      this.idRemove = '0';
       this.messageAction = '';
       this.closeConfirmAction();
       this.statusLoading = true;

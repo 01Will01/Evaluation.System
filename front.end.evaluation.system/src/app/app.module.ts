@@ -32,6 +32,8 @@ import { AuthGuard } from '../app/guards/auth-guard.service';
 
 
 //Material
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -53,6 +55,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
+import {MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material';
+import { MatInputModule } from '@angular/material';
 
 //Components
 import { FormtEvaluation } from './components/evaluation/evaluation';
@@ -64,7 +68,6 @@ import { CollaboratorComponent } from './components/data-crud/collaborator/colla
 import { DepartmentComponent } from './components/data-crud/department/department.component';
 import { ResponsabilityComponent } from './components/data-crud/responsability/responsability.component';
 import { AreaComponent } from './components/data-crud/area/area.component';
-import { WeightComponent } from './components/data-crud/weight/weight.component';
 import { DataControlWeightComponent } from './components/data-control-evaluative/data-control-evaluative.component';
 import { PipesSearchComponent } from './components/pipes/pipes-search/pipes-search.component';
 import { MatSelectSearchClearDirective } from './components/pipes/pipes-search/mat-select-search-clear.directive';
@@ -77,6 +80,20 @@ import { RelationshipResponsibilityPermissionComponent } from './components/data
 import { ScalesComponent } from './components/data-crud/scales/scales.component';
 import { CriterionComponent } from './components/data-crud/criterion/criterion.component';
 import { RelationshipAreaCriterionComponent } from './components/data-crud/relationship-area-criterion/relationship-area-criterion.component';
+import { EvaluationMarkerComponent } from './components/data-crud/evaluation-marker/evaluation-marker.component';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'L',
+  },
+  display: {
+    dateInput: 'L',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'L',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 
 @NgModule({
   declarations: [
@@ -91,7 +108,6 @@ import { RelationshipAreaCriterionComponent } from './components/data-crud/relat
     DepartmentComponent,
     ResponsabilityComponent,
     AreaComponent,
-    WeightComponent,
     DataControlWeightComponent,
     PipesSearchComponent,
     MatSelectSearchClearDirective,
@@ -104,6 +120,7 @@ import { RelationshipAreaCriterionComponent } from './components/data-crud/relat
     ScalesComponent,
     CriterionComponent,
     RelationshipAreaCriterionComponent,
+    EvaluationMarkerComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,7 +131,10 @@ import { RelationshipAreaCriterionComponent } from './components/data-crud/relat
     Routing,
     BrowserAnimationsModule,
 
+    MatInputModule,
     MatProgressBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule,
     MatCheckboxModule,
     MatRadioModule,
@@ -136,7 +156,7 @@ import { RelationshipAreaCriterionComponent } from './components/data-crud/relat
     MatSidenavModule,
     MatToolbarModule
   ],
-  providers: [LoginService, AuthGuard, ColaboratorService, DashboardService, AreaService,DepartmentService,ResponsibilityService,PrintService, { provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }, {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},LoginService, AuthGuard, ColaboratorService, DashboardService, AreaService,DepartmentService,ResponsibilityService,PrintService, { provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

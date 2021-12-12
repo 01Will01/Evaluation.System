@@ -24,6 +24,9 @@
                 <div *ngIf="statusDataDecisionView">
                     <div *ngIf="statusDataQuestionView" (click)="getselection('Questões')" class="data-decision"><a>Questões</a></div>
                 </div>
+                <div *ngIf="statusDataDecisionView">
+                    <div *ngIf="statusDataEvaluationMarkerView" (click)="getselection('Marcador')" class="data-decision"><a>Marcador</a></div>
+                </div>
             </div>
         </div>
 
@@ -48,6 +51,12 @@
         <div class="data-space">
             <div *ngIf="statusShowAreaCriterion">
                 <app-relationship-area-criterion></app-relationship-area-criterion>
+            </div>
+        </div>
+
+        <div class="data-space">
+            <div *ngIf="statusShowEvaluationMarker">
+                <app-evaluation-marker></app-evaluation-marker>
             </div>
         </div>
     </div>

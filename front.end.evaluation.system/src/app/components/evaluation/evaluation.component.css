@@ -170,6 +170,8 @@ p {
     text-align: center;
     font-size: 12px;
     padding: 7px;
+    color: #2f323a !important;
+    background-color: white !important;
 }
 
 

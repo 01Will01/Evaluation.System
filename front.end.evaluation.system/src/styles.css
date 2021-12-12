@@ -128,6 +128,21 @@ th.mat-header-cell {
     border-style: solid;
 }
 
+.mat-datepicker-content .mat-calendar-next-button,
+.mat-datepicker-content .mat-calendar-previous-button,
+.mat-datepicker-toggle {
+    color: rgb(255 255 255) !important;
+}
+
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button,
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
+    display: block;
+    font-size: inherit;
+    width: 2.5em;
+    height: 2.5em;
+    color: rgb(255 255 255) !important;
+}
+
 @media screen and (max-width: 428px) {
     .mat-form-field {
         width: 50vw;

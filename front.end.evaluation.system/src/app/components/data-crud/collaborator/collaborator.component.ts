@@ -82,8 +82,8 @@ export class CollaboratorComponent implements OnInit {
   public rowsCollaborator: CollaboratorElements[] = [];
   public rowsUserDisabled: CollaboratorElements[] = [];
 
-  public evaluatorSet: Array<OptionsEvaluatorElements> = [{ name: 'Indeterminado', id: '0', responsibilityName: 'Indeterminado', areaId: '0' }];
-  public evaluatorBackupSet: Array<OptionsEvaluatorElements> = [{ name: 'Indeterminado', id: '0', responsibilityName: 'Indeterminado', areaId: '0' }];
+  public evaluatorSet: Array<OptionsEvaluatorElements> = [];
+  public evaluatorBackupSet: Array<OptionsEvaluatorElements> = [];
   public localSet: Array<OptionsElements> = [];
   public areaSet: Array<OptionsElements> = [];
   public responsibilitySet: Array<OptionsElements> = [];
@@ -155,6 +155,7 @@ export class CollaboratorComponent implements OnInit {
     var row: OptionsEvaluatorElements;
     var list: Array<OptionsEvaluatorElements> = [];
     let userActive = true; 
+    list.push({ name: 'Não há', id: undefined, responsibilityName: 'Indeterminado', areaId: '0' });
     this.collaboratorService.Get(userActive).subscribe(res => {
       if (res.success == true) {
         res.data.forEach(element => {

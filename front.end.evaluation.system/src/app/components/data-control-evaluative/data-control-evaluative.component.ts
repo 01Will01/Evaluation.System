@@ -18,6 +18,9 @@ export class DataControlWeightComponent implements OnInit {
 
   public statusShowAreaCriterion: boolean = false;
   public statusDataAreaCriterionView: boolean = false;
+  
+  public statusShowEvaluationMarker: boolean = false;
+  public statusDataEvaluationMarkerView: boolean = false;
 
   public statusDataDecisionView: boolean = false;
   public nameDataDecision: string = 'Selecione o dado';
@@ -40,6 +43,7 @@ export class DataControlWeightComponent implements OnInit {
       case 'Critérios': { this.openCriterion(); break; }
       case 'Área & Critério': { this.openAreaCriterion(); break; }
       case 'Questões': { this.openQuestion(); break; }
+      case 'Marcador': { this.openEvaluationMarker(); break; }
     }
 
     this.checkOptionsDecision();
@@ -51,6 +55,7 @@ export class DataControlWeightComponent implements OnInit {
     this.closeQuestion();
     this.closeCriterion();
     this.closeAreaCriterion();
+    this.closeEvaluationMarker();
   }
   closeNote() { this.statusShowNote = false; }
 
@@ -59,6 +64,7 @@ export class DataControlWeightComponent implements OnInit {
     this.closeNote();
     this.closeCriterion();
     this.closeAreaCriterion();
+    this.closeEvaluationMarker();
   }
   closeQuestion() { this.statusShowQuestion = false; }
 
@@ -67,6 +73,7 @@ export class DataControlWeightComponent implements OnInit {
     this.closeNote();
     this.closeQuestion();
     this.closeAreaCriterion();
+    this.closeEvaluationMarker();
   }
   closeCriterion() { this.statusShowCriterion = false; }
 
@@ -75,8 +82,18 @@ export class DataControlWeightComponent implements OnInit {
     this.closeNote();
     this.closeQuestion();
     this.closeCriterion();
+    this.closeEvaluationMarker();
   }
   closeAreaCriterion() { this.statusShowAreaCriterion = false; }
+
+  openEvaluationMarker() {
+    this.statusShowEvaluationMarker = true;
+    this.closeNote();
+    this.closeQuestion();
+    this.closeCriterion();
+    this.closeAreaCriterion();
+  }
+  closeEvaluationMarker() { this.statusShowEvaluationMarker = false; }
 
 
 
@@ -91,6 +108,7 @@ export class DataControlWeightComponent implements OnInit {
                     this.statusDataQuestionView = true; 
                     this.statusDataCriterionView = true; 
                     this.statusDataAreaCriterionView = true; 
+                    this.statusDataEvaluationMarkerView = true; 
                     break; 
           }default: {
             break;
