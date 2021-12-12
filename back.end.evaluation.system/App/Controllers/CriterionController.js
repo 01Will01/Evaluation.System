@@ -1,4 +1,8 @@
 /* Application/Controllers/CriterionController.js */
+var shared = require('../../Shared/Constants.js');
+
+var _shared = new shared();
+
 module.exports = (application) => {
     application.post("/criterio/cadastrar", (req, res) => {
         let _criterionServices = new application.Domain.Services.CriterionService();
@@ -6,7 +10,7 @@ module.exports = (application) => {
         try {
             _criterionServices.Include(req, res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -19,7 +23,7 @@ module.exports = (application) => {
         try {
             _criterionServices.ControlRelationshipAreaCriterion(req, res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -32,7 +36,7 @@ module.exports = (application) => {
         try {
             _criterionServices.Get(res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -45,7 +49,7 @@ module.exports = (application) => {
         try {
             _criterionServices.GetRelationshipAreaCriterion(res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -61,7 +65,7 @@ module.exports = (application) => {
         try {
             _criterionServices.Update(req, res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de atualização. error: ${err.message}`
             );
@@ -77,7 +81,7 @@ module.exports = (application) => {
         try {
             _criterionServices.Disable(req, res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de desabilitação. error: ${err.message}`
             );
@@ -93,14 +97,14 @@ module.exports = (application) => {
         try {
             _criterionServices.Activate(req, res, _criterionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de ativação. error: ${err.message}`
             );
         }
     });
 
-    this.NotificationTemplate = function(_status, _data, _message) {
+    _shared.NotificationTemplate = function(_status, _data, _message) {
         return {
             success: _status,
             data: _data,

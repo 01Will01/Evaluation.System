@@ -1,4 +1,8 @@
 /* Application/Controllers/AreaController.js */
+var shared = require('../../Shared/Constants.js');
+
+var _shared = new shared();
+
 module.exports = (application) => {
     application.post("/questao/cadastrar", (req, res) => {
         let _questionServices = new application.Domain.Services.QuestionService();
@@ -6,7 +10,7 @@ module.exports = (application) => {
         try {
             _questionServices.Include(req, res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -19,7 +23,7 @@ module.exports = (application) => {
         try {
             _questionServices.Get(res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -32,7 +36,7 @@ module.exports = (application) => {
         try {
             _questionServices.GetByAreaId(req, res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -45,7 +49,7 @@ module.exports = (application) => {
         try {
             _questionServices.GetQuantity(res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -61,7 +65,7 @@ module.exports = (application) => {
         try {
             _questionServices.Update(req, res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de atualização. error: ${err.message}`
             );
@@ -77,7 +81,7 @@ module.exports = (application) => {
         try {
             _questionServices.Disable(req, res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de desabilitação. error: ${err.message}`
             );
@@ -93,18 +97,10 @@ module.exports = (application) => {
         try {
             _questionServices.Activate(req, res, _questionRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de ativação. error: ${err.message}`
             );
         }
     });
-
-    this.NotificationTemplate = function(_status, _data, _message) {
-        return {
-            success: _status,
-            data: _data,
-            msg: [{ text: _message }],
-        };
-    };
 };

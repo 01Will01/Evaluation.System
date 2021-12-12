@@ -1,4 +1,9 @@
-/* Application/Controllers/AreaController.js */
+/* Application/Controllers/EvaluationController.js */
+
+var shared = require('../../Shared/Constants.js');
+
+var _shared = new shared();
+
 module.exports = (application) => {
     application.post("/avaliacao", (req, res) => {
         let _evaluationServices = new application.Domain.Services.EvaluationService();
@@ -6,7 +11,7 @@ module.exports = (application) => {
         try {
             _evaluationServices.RegisterOrChange(req, res, _repositories);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -19,7 +24,7 @@ module.exports = (application) => {
         try {
             _evaluationServices.GetQuestions(req, res, _repositories);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -32,7 +37,7 @@ module.exports = (application) => {
         try {
             _evaluationServices.GetEvaluationCompleted(req, res, _repositories);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -45,7 +50,7 @@ module.exports = (application) => {
         try {
             _evaluationServices.GetScales(req, res, _repositories);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -58,18 +63,10 @@ module.exports = (application) => {
         try {
             _evaluationServices.UpdateScales(req, res, _repositories);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
         }
     });
-
-    this.NotificationTemplate = function(_status, _data, _message) {
-        return {
-            success: _status,
-            data: _data,
-            msg: [{ text: _message }],
-        };
-    };
 };

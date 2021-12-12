@@ -1,4 +1,9 @@
 /* Application/Controllers/AreaController.js */
+
+var shared = require('../../Shared/Constants.js');
+
+var _shared = new shared();
+
 module.exports = (application) => {
     application.post("/area/cadastrar", (req, res) => {
         let _areaServices = new application.Domain.Services.AreaServices();
@@ -6,7 +11,7 @@ module.exports = (application) => {
         try {
             _areaServices.Include(req, res, _areaRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -19,7 +24,7 @@ module.exports = (application) => {
         try {
             _areaServices.Get(res, _areaRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
@@ -35,7 +40,7 @@ module.exports = (application) => {
         try {
             _areaServices.Update(req, res, _areaRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de atualização. error: ${err.message}`
             );
@@ -51,7 +56,7 @@ module.exports = (application) => {
         try {
             _areaServices.Disable(req, res, _areaRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de desabilitação. error: ${err.message}`
             );
@@ -67,18 +72,10 @@ module.exports = (application) => {
         try {
             _areaServices.Activate(req, res, _areaRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de ativação. error: ${err.message}`
             );
         }
     });
-
-    this.NotificationTemplate = function(_status, _data, _message) {
-        return {
-            success: _status,
-            data: _data,
-            msg: [{ text: _message }],
-        };
-    };
 };

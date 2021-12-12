@@ -1,7 +1,7 @@
 const dbConn = require("../../../Shared/DbConnectionMySQL");
 const uuid = require("uuid");
 var shared = require('../../../Shared/Constants.js');
-
+require('express-async-errors');
 var _shared = new shared();
 
 function EvaluationMarkersDAO() {}
@@ -95,7 +95,7 @@ EvaluationMarkersDAO.prototype.GetCount = async() => {
 
 EvaluationMarkersDAO.prototype.ValidateByDescription = async(description) => {
     let conn = new dbConn(true);
-    let query = `  SELECT ID_STATUS AS status FROM TB_MARCADORES_AVALIATIVOS  WHERE ds_marcador = '${description}'`;
+    let query = `  SELECT ID_STATUS AS status FROM TB_MARCADORES_AVALIATIVOS  WHERE ds_marcador = '${description}' AND ID_STATUS IN (1,5)`;
     let data = await conn.query(query).then((result) => {
         return result;
     });
@@ -107,8 +107,38 @@ EvaluationMarkersDAO.prototype.ValidateByDescription = async(description) => {
 EvaluationMarkersDAO.prototype.UpdateStatus = async(status, id) => {
     let conn = new dbConn(true);
     let query = `UPDATE TB_MARCADORES_AVALIATIVOS
-                 SET ID_STATUS = ${status} 
+                 SET ID_STATUS = ${status},
+                 DT_ALTERACAO =  curdate()
                  WHERE ID_MARCADOR = '${id}'`;
+    conn.query(query).then(() => {});
+    conn.close();
+};
+
+EvaluationMarkersDAO.prototype.Update = async(element) => {
+    let marker = element;
+
+    let conn = new dbConn(true);
+    let query = `UPDATE TB_MARCADORES_AVALIATIVOS
+                 SET PERIODO = ${marker.period},
+                 DT_LIMITE =  '${marker.limiteDate}',
+                 DT_ALTERACAO =  curdate()
+                 WHERE ID_MARCADOR = '${marker.id}'`;
+    conn.query(query).then(() => {});
+    conn.close();
+};
+
+EvaluationMarkersDAO.prototype.UpdateDates = async(element) => {
+    let marker = element;
+
+    let conn = new dbConn(true);
+    let query = `UPDATE TB_MARCADORES_AVALIATIVOS
+                 SET PERIODO = ${marker.period},
+                 DS_MARCADOR = '${marker.description}',
+                 DT_INICIO =  '${marker.initialDate}',
+                 DT_LIMITE =  '${marker.limiteDate}',
+                 DT_FIM =  '${marker.endDate}',
+                 DT_ALTERACAO =  curdate()
+                 WHERE ID_MARCADOR = '${marker.id}'`;
     conn.query(query).then(() => {});
     conn.close();
 };

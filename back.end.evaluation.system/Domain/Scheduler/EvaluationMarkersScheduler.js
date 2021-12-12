@@ -75,7 +75,6 @@ module.exports = (application) => {
 
         if (objectDescription.status) {
             let analisy = await _markersRepository.ValidateByDescription(objectDescription.description)
-
             if (analisy.status == false && analisy.count == 0) {
                 let object = await GetObjectFinal(objectDescription.description, data, _markersRepository);
                 await _markersRepository.Include(object, _enumStatus.inWaiting)
@@ -103,8 +102,8 @@ module.exports = (application) => {
 
         datenow = moment().locale('pt-br');
 
-        let currentDates = GetMonthAndYearInIntegerValues(date);
-        let nowDates = GetMonthAndYearInIntegerValues(datenow.format('L'));
+        let currentDates = _shared.GetMonthAndYearInIntegerValues(date);
+        let nowDates = _shared.GetMonthAndYearInIntegerValues(datenow.format('L'));
 
         return (currentDates.dateDay <= nowDates.dateDay && currentDates.dateMonth <= nowDates.dateMonth && currentDates.dateYear <= nowDates.dateYear)
 
@@ -117,8 +116,8 @@ module.exports = (application) => {
 
         datenow = moment().locale('pt-br');
 
-        limitDates = GetMonthAndYearInIntegerValues(object.limiteDate);
-        nowDates = GetMonthAndYearInIntegerValues(datenow.format('L'));
+        limitDates = _shared.GetMonthAndYearInIntegerValues(object.limiteDate);
+        nowDates = _shared.GetMonthAndYearInIntegerValues(datenow.format('L'));
 
         let data = {}
 
@@ -145,22 +144,10 @@ module.exports = (application) => {
         return data;
     }
 
-    var GetMonthAndYearInIntegerValues = function(date) {
-        let limitDateFormatted = moment(date, "DDMMYYYY");
-        let data = {}
-
-        data.dateDay = new Date(limitDateFormatted.format('L')).getDate();
-        data.dateMonth = new Date(limitDateFormatted.format('L')).getMonth() + 1;
-        data.dateYear = new Date(limitDateFormatted.format('L')).getFullYear();
-
-        return data;
-    }
-
     var GetObjectFinal = async function(description, data, _markersRepository) {
         let object = {};
-        let firstMarker = false;
-
-        let dates = GetPeriodDates(description, data, firstMarker);
+        let currentYear = false;
+        let dates = _shared.GetPeriodDates(description, data, currentYear);
 
         object.description = description;
         object.period = data.period;
@@ -172,113 +159,31 @@ module.exports = (application) => {
     }
 
     var GetObjectFirstEvaluationMarker = async function() {
-        datenow = moment().locale('pt-br');
+            datenow = moment().locale('pt-br');
 
-        let nowDates = GetMonthAndYearInIntegerValues(datenow.format('L'));
-        let _enumPeriod = _shared.GetEnumPeriod();
+            let nowDates = _shared.GetMonthAndYearInIntegerValues(datenow.format('L'));
+            let _enumPeriod = _shared.GetEnumPeriod();
 
-        let midleCalendar = 6;
-        let firstMarker = true;
+            let midleCalendar = 6;
+            let currentYear = true;
 
-        let referenceDate = { endDate: datenow.format('L'), period: _enumPeriod.semester }
+            let referenceDate = { endDate: datenow.format('L'), period: _enumPeriod.semester }
 
-        let period = (midleCalendar > nowDates.dateMonth) ? 1 : 2;
+            let period = (midleCalendar > nowDates.dateMonth) ? 1 : 2;
 
-        let description = `${period}º periodo de ${nowDates.dateYear}`;
+            let description = `${period}º periodo de ${nowDates.dateYear}`;
 
-        let dates = GetPeriodDates(description, referenceDate, firstMarker)
+            let dates = _shared.GetPeriodDates(description, referenceDate, currentYear)
 
-        let object = {};
+            let object = {};
 
-        object.description = description;
-        object.period = _enumPeriod.semester;
-        object.initialDate = dates.initialDate;
-        object.limiteDate = dates.limiteDate;
-        object.endDate = dates.endDate;
+            object.description = description;
+            object.period = _enumPeriod.semester;
+            object.initialDate = dates.initialDate;
+            object.limiteDate = dates.limiteDate;
+            object.endDate = dates.endDate;
 
-        return object;
-    }
-
-    var GetPeriodDates = function(description, data, firstMarker) {
-        let enumPeriod = _shared.GetEnumPeriod();
-        let enumDates = _shared.GetEnumMonth();
-
-        let object = {}
-
-        let period = description.substring(0, 1);
-
-        let endDates = GetMonthAndYearInIntegerValues(data.endDate)
-
-        let year = (period == '1' && firstMarker == false) ? endDates.dateYear + 1 : endDates.dateYear;
-
-        if (data.period == enumPeriod.semester) {
-            // para semestre no primeiro periodo
-            if (period == '1') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.january, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.may, year);
-                object.endDate = GetMonthWithLastDay(enumDates.june, year);
-            }
-            // para semestre no segundo periodo
-            else if (period == '2') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.july, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.november, year);
-                object.endDate = GetMonthWithLastDay(enumDates.december, year);
-            }
-
-        } else if (data.period == enumPeriod.quarter) {
-
-            // para trimestre no primeiro periodo 
-            if (period == '1') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.january, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.february, year);
-                object.endDate = GetMonthWithLastDay(enumDates.march, year);
-            }
-            // para trimestre no segundo periodo 
-            else if (period == '2') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.april, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.may, year);
-                object.endDate = GetMonthWithLastDay(enumDates.june, year);
-            }
-            // para trimestre no terceiro periodo 
-            else if (period == '3') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.july, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.august, year);
-                object.endDate = GetMonthWithLastDay(enumDates.september, year);
-            }
-            // para trimestre no quarto periodo 
-            else if (period == '4') {
-                object.initialDate = GetDateFormtPatterMysql('01', enumDates.october, year);
-                object.limiteDate = GetDateFormtPatterMysql('15', enumDates.november, year);
-                object.endDate = GetMonthWithLastDay(enumDates.december, year);
-            }
+            return object;
         }
-
-        return object;
-    }
-
-    var GetDateFormtPatter = function(day, month, year) {
-        let newMonth = (month < 10) ? `0${month}` : month;
-
-        return `${day}/${newMonth}/${year}`;
-    }
-
-    var GetDateFormtPatterMysql = function(day, month, year) {
-        let newMonth = (month < 10) ? `0${month}` : month;
-
-        return `${year}-${newMonth}-${day}`;
-    }
-
-    var GetMonthWithLastDay = function(month, year) {
-        let newEndDate = moment(GetDateFormtPatter('01', month, year), "DDMMYYYY");
-
-        newEndDate.locale('pt-br');
-        newEndDate.subtract(1, 'days').format('L')
-
-        let newEndDates = GetMonthAndYearInIntegerValues(newEndDate.subtract(1, 'days').format('L'))
-        let newDay = (newEndDates.dateDay < 10) ? `0${newEndDates.dateDay}` : newEndDates.dateDay;
-
-        return GetDateFormtPatterMysql(newDay, month, year);
-    }
-
-    //#endregion métodos auxiliares logicos
+        //#endregion métodos auxiliares logicos
 }

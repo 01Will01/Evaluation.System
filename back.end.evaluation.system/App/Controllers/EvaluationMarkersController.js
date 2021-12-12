@@ -1,14 +1,19 @@
-/* Application/Controllers/evaluationController.js */
+/* Application/Controllers/evaluationMarkerController.js */
+require('express-async-errors');
+var shared = require('../../Shared/Constants.js');
+
+var _shared = new shared();
+
 module.exports = (application) => {
-    application.post("/marcador/cadastrar", (req, res) => {
+    application.put("/marcador/modificacao", async(req, res) => {
         let _EvaluationMarkersServices =
             new application.Domain.Services.EvaluationMarkersServices(application);
-        let _evaluationRepository =
+        let _markerRepository =
             new application.Infra.Data.Repositories.EvaluationMarkersDAO();
         try {
-            _EvaluationMarkersServices.Include(req, res, _evaluationRepository);
+            await _EvaluationMarkersServices.Update(req, res, _markerRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo de cadastro. error: ${err.message}`
             );
@@ -18,55 +23,15 @@ module.exports = (application) => {
     application.get("/marcador", (req, res) => {
         let _EvaluationMarkersServices =
             new application.Domain.Services.EvaluationMarkersServices(application);
-        let _evaluationRepository =
+        let _markerRepository =
             new application.Infra.Data.Repositories.EvaluationMarkersDAO();
         try {
-            _EvaluationMarkersServices.Get(res, _evaluationRepository);
+            _EvaluationMarkersServices.Get(res, _markerRepository);
         } catch (err) {
-            res = this.NotificationTemplate(
+            res = _shared.NotificationTemplate(
                 false, [],
                 `Ocorreu uma exceção no processo consulta. error: ${err.message}`
             );
         }
     });
-
-    application.delete("/marcador/:id", (req, res) => {
-        let _EvaluationMarkersServices =
-            new application.Domain.Services.EvaluationMarkersServices(application);
-        let _evaluationRepository =
-            new application.Infra.Data.Repositories.EvaluationMarkersDAO();
-
-        try {
-            _EvaluationMarkersServices.Disable(req, res, _evaluationRepository);
-        } catch (err) {
-            res = this.NotificationTemplate(
-                false, [],
-                `Ocorreu uma exceção no processo de desabilitação. error: ${err.message}`
-            );
-        }
-    });
-
-    application.put("/marcador/ativar", (req, res) => {
-        let _EvaluationMarkersServices =
-            new application.Domain.Services.EvaluationMarkersServices(application);
-        let _evaluationRepository =
-            new application.Infra.Data.Repositories.EvaluationMarkersDAO();
-
-        try {
-            _EvaluationMarkersServices.Activate(req, res, _evaluationRepository);
-        } catch (err) {
-            res = this.NotificationTemplate(
-                false, [],
-                `Ocorreu uma exceção no processo de ativação. error: ${err.message}`
-            );
-        }
-    });
-
-    this.NotificationTemplate = function(_status, _data, _message) {
-        return {
-            success: _status,
-            data: _data,
-            msg: [{ text: _message }],
-        };
-    };
 };
