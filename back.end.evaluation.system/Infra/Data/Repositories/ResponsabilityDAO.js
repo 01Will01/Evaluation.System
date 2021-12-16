@@ -67,7 +67,7 @@ ResponsabilityDAO.prototype.IncludeRelationResponsibilityPermission = async func
     query = `INSERT INTO TB_CARGOS_PERMISSOES
     (
                     ID_CARGO_PERMISSAO,
-                    ID_CARGO,
+                    ID_CARGO_AREA,
                     ID_PERMISSAO,
                     DT_CRIACAO
       
@@ -75,7 +75,7 @@ ResponsabilityDAO.prototype.IncludeRelationResponsibilityPermission = async func
                     VALUES 
                     (
                         '${id}',
-                        '${relation.ResponsibilityId}',
+                        '${relation.responsibilityAreaId}',
                         '${relation.PermissionId}',
     
                         curdate()
@@ -105,7 +105,7 @@ ResponsabilityDAO.prototype.RemoveRelationResponsibilityPermission = async funct
     let conn = new dbConn(true);
 
     query = `DELETE FROM TB_CARGOS_PERMISSOES 
-             WHERE ID_CARGO = '${relation.ResponsibilityId}'
+             WHERE ID_CARGO_AREA = '${relation.responsibilityAreaId}'
              AND ID_PERMISSAO = '${relation.PermissionId}';`;
 
     conn.query(query).then(() => {});
@@ -172,7 +172,7 @@ ResponsabilityDAO.prototype.GetResponsibilityPermission = async() => {
     let conn = new dbConn(true);
     let query = `SELECT 
                     ID_CARGO_PERMISSAO AS id,
-                    TG.ID_CARGO AS responsibilityId,
+                    TGA.ID_CARGO_AREA AS responsibilityAreaId,
                     TG.DS_CARGO AS responsibilityName,
                     TP.ID_PERMISSAO AS permissionId,
                     TP.DS_PERMISSAO AS permissionName,
@@ -180,8 +180,10 @@ ResponsabilityDAO.prototype.GetResponsibilityPermission = async() => {
                 FROM TB_CARGOS_PERMISSOES TGP
                 LEFT JOIN TB_PERMISSOES TP 
                 ON TGP.ID_PERMISSAO = TP.ID_PERMISSAO
+                LEFT JOIN TB_CARGOS_AREA TGA 
+                ON TGA.ID_CARGO_AREA = TGP.ID_CARGO_AREA
                 LEFT JOIN TB_CARGOS TG
-                ON TGP.ID_CARGO = TG.ID_CARGO;`;
+                ON TGA.ID_CARGO = TG.ID_CARGO;`;
 
     let data = await conn.query(query).then((result) => {
         return result;

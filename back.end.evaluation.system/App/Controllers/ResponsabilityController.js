@@ -36,7 +36,7 @@ module.exports = (application) => {
             );
         }
     });
-    application.post("/cargo/cadastrar-cargo-permissao", (req, res) => {
+    application.post("/cargo/cadastrar-relacao-permissao", (req, res) => {
         let _responsabilityServices =
             new application.Domain.Services.ResponsabilityServices(application);
         let _responsabilityRepository =

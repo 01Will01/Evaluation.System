@@ -75,9 +75,7 @@ UserServices.prototype.Authenticator = async(req, res, _userRepository) => {
 
     if (data.analysis.status) {
         let result = data.result[0];
-        let permissions = await _userRepository.GetPermissions(
-            result.responsibilityId
-        );
+        let permissions = await _userRepository.GetPermissions(result.responsibilityId, result.areaId);
         permissions = permissions == undefined ? [] : permissions;
 
         result.permissions = permissions;

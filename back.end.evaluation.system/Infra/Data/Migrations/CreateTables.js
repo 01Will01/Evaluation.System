@@ -68,53 +68,54 @@ module.exports = CreateTables = async() => {
                                     
     -- cria tabela areas
                                       CREATE TABLE IF NOT EXISTS tb_areas (
-                                      id_area VARCHAR (50) NOT NULL,
-                                      ds_area VARCHAR (50) NOT NULL,
-                                      id_departamento VARCHAR (50) NOT NULL,
-                                      dt_cadastro DATETIME NOT NULL,
-                                      dt_alteracao DATETIME NOT NULL,
-                                      id_status int NOT NULL,
-                                      PRIMARY KEY(id_area),
-                                      FOREIGN KEY (id_departamento) REFERENCES tb_departamentos(id_departamento),
-                                      FOREIGN KEY (id_status) REFERENCES tb_status(id_status),
-                                      INDEX (ds_area(10))
-                                      );
+                                        id_area VARCHAR (50) NOT NULL,
+                                        ds_area VARCHAR (50) NOT NULL,
+                                        id_departamento VARCHAR (50) NOT NULL,
+                                        dt_cadastro DATETIME NOT NULL,
+                                        dt_alteracao DATETIME NOT NULL,
+                                        id_status int NOT NULL,
+                                        PRIMARY KEY(id_area),
+                                        FOREIGN KEY (id_departamento) REFERENCES tb_departamentos(id_departamento),
+                                        FOREIGN KEY (id_status) REFERENCES tb_status(id_status),
+                                        INDEX (ds_area(10))
+                                        );
                                                                     
-     -- cria tabela que relaciona cargos às permissões
+                                      
+-- cria tabela que relaciona cargos às respctivas areas
+                                      CREATE TABLE IF NOT EXISTS tb_cargos_area (
+                                          id_cargo_area VARCHAR(50) NOT NULL,
+                                          id_cargo VARCHAR (50) NOT NULL,
+                                          id_area VARCHAR (50) NOT NULL,
+                                          dt_criacao VARCHAR (100) NOT NULL
+                                          );                                
+
+-- cria tabela que relaciona cargos às permissões
                                     CREATE TABLE IF NOT EXISTS tb_cargos_permissoes (
-                                    id_cargo_permissao VARCHAR(50) NOT NULL,
-                                    id_cargo VARCHAR (50) NOT NULL,
-                                    id_permissao VARCHAR (50) NOT NULL,
-                                    dt_criacao VARCHAR (100) NOT NULL
-                                    );
-                                    
-     -- cria tabela que relaciona cargos às respctivas areas
-                                    CREATE TABLE IF NOT EXISTS tb_cargos_area (
-                                    id_cargo_area VARCHAR(50) NOT NULL,
-                                    id_cargo VARCHAR (50) NOT NULL,
-                                    id_area VARCHAR (50) NOT NULL,
-                                    dt_criacao VARCHAR (100) NOT NULL
-                                    );                                
-                                    
-    -- cria tabela usuarios
+                                        id_cargo_permissao VARCHAR(50) NOT NULL,
+                                        id_cargo_area VARCHAR (50) NOT NULL,
+                                        id_permissao VARCHAR (50) NOT NULL,
+                                        dt_criacao VARCHAR (100) NOT NULL
+                                        );
+                                          
+-- cria tabela usuarios
                                     CREATE TABLE IF NOT EXISTS tb_usuarios (
-                                    id_usuario VARCHAR(50) NOT NULL,
-                                    nome VARCHAR (70) NOT NULL,
-                                    email VARCHAR (50) NOT NULL,
-                                    senha VARCHAR (100) NOT NULL,
-                                    id_avaliador VARCHAR (50) NULL,
-                                    id_cargo VARCHAR (50) NOT NULL,
-                                    id_area VARCHAR (50) NOT NULL,
-                                    dt_cadastro DATETIME NOT NULL,
-                                    dt_alteracao DATETIME NOT NULL,
-                                    id_status INT NOT NULL,
-                                    PRIMARY KEY(id_usuario),
-                                    FOREIGN KEY (id_cargo) REFERENCES tb_cargos(id_cargo),
-                                    FOREIGN KEY (id_area) REFERENCES tb_areas(id_area),
-                                    FOREIGN KEY (id_status) REFERENCES tb_status(id_status),
-                                    INDEX (nome, email, senha(20))
-                                    );
-                                    
+                                        id_usuario VARCHAR(50) NOT NULL,
+                                        nome VARCHAR (70) NOT NULL,
+                                        email VARCHAR (50) NOT NULL,
+                                        senha VARCHAR (100) NOT NULL,
+                                        id_avaliador VARCHAR (50) NULL,
+                                        id_cargo VARCHAR (50) NOT NULL,
+                                        id_area VARCHAR (50) NOT NULL,
+                                        dt_cadastro DATETIME NOT NULL,
+                                        dt_alteracao DATETIME NOT NULL,
+                                        id_status INT NOT NULL,
+                                        PRIMARY KEY(id_usuario),
+                                        FOREIGN KEY (id_cargo) REFERENCES tb_cargos(id_cargo),
+                                        FOREIGN KEY (id_area) REFERENCES tb_areas(id_area),
+                                        FOREIGN KEY (id_status) REFERENCES tb_status(id_status),
+                                        INDEX (nome, email, senha(20))
+                                        );
+                                        
     -- cria tabela criterios
                                     CREATE TABLE IF NOT EXISTS tb_criterios (
                                     id_criterio VARCHAR(50) NOT NULL,

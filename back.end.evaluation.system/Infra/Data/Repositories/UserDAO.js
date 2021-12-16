@@ -80,12 +80,15 @@ UserDAO.prototype.GetIdByEmail = async function(email) {
     return data[0].id;
 };
 
-UserDAO.prototype.GetPermissions = async(id) => {
+UserDAO.prototype.GetPermissions = async(responsibilityId, areaId) => {
     let conn = new dbConn(true);
     let query = `SELECT 
-    ID_PERMISSAO  		AS id		
-    FROM TB_CARGOS_PERMISSOES
-    WHERE ID_CARGO = "${id}"`;
+    TCP.ID_PERMISSAO  		  AS id		
+    FROM TB_CARGOS_PERMISSOES AS TCP
+    INNER JOIN TB_CARGOS_AREA AS TCA
+    ON TCA.ID_CARGO = '${responsibilityId}'
+    AND TCA.ID_AREA = '${areaId}'
+    AND TCA.ID_CARGO_AREA = TCP.ID_CARGO_AREA`;
 
     let data = await conn.query(query).then((result) => {
         return result;
@@ -100,17 +103,16 @@ UserDAO.prototype.Authenticator = async(email) => {
     let conn = new dbConn(true);
 
     let query = `SELECT 
-    USER.id_usuario AS id,
-    USER.nome       As name,
-    USER.email      AS email,
-    USER.senha      AS password,
-    USER.id_cargo   AS responsibilityId,
-    USER.id_status   AS status
+    TU.id_usuario AS id,
+    TU.nome       As name,
+    TU.email      AS email,
+    TU.senha      AS password,
+    TU.id_cargo   AS responsibilityId,
+    TU.id_area    AS areaId,
+    TU.id_status  AS status
 
-    FROM TB_USUARIOS AS USER
-    INNER JOIN TB_CARGOS AS RESPONSIBILITY
-    ON RESPONSIBILITY.ID_CARGO = USER.ID_CARGO
-    WHERE USER.EMAIL = "${email}";`;
+    FROM TB_USUARIOS AS TU
+    WHERE TU.EMAIL = "${email}";`;
 
     let data = await conn.query(query).then((result) => {
         return result;
